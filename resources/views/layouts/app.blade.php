@@ -43,9 +43,13 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/library') }}">
-                    Sara's BookStore
-                </a>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a class="navbar-brand" href="{{ url('/library') }}">
+                    Sara's BookStore</a></li>
+                    <li><a  href="/library/create">Add new Book</a></li>
+                </ul>
+                
+                
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">

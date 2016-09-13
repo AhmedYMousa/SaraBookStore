@@ -18,8 +18,8 @@ class AddFileToBooks extends Migration
             {
                
                 $table->string('filename')->nullable()->after('category');
-                $table->string('mime');
-                $table->string('original_filename');
+                $table->string('mime')->nullable();
+                $table->string('original_filename')->nullable();
             });
     }
 
