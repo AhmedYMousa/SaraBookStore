@@ -75,7 +75,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                   <a href="/library">Go to the Sara BookStore</a> 
                 </div>
 
                 <div class="links">
