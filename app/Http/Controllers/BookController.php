@@ -50,28 +50,29 @@ class BookController extends Controller
    			$book->year=$request->input('year');
 
             //Save image file
-            if($request->book_cover!=null)
-            {
-               $image=$request->file('book_cover');
-               $fileName=time() . '.' .$image->getClientOriginalExtension(); //getClientOriginalExtension(); it include in image intervention library that we pulled through composer
-               $location=public_path('images/' .$fileName);
-               Image::make($image)->resize(350,350)->save($location);
-               $book->image_path=$fileName;
+         if(isset($request->book_cover))
+         {
+            $image=$request->file('book_cover');
+            $fileName=time() . '.' .$image->getClientOriginalExtension(); //getClientOriginalExtension(); is included in image intervention library that we pulled through composer
+            $location=public_path('images/' .$fileName);
+            Image::make($image)->resize(350,350)->save($location);
+            $book->image_path=$fileName;
 
-            }
+         }
 
-            if($request->upload_book!=null)
-            {
-               $file = $request->file('upload_book');
-               $extension = $file->getClientOriginalExtension();
-               Storage::disk('local')->put($file->getFilename().'.'.$extension, file_get_contents($file));
-               
-               $book->mime = $file->getClientMimeType();
-               $book->original_filename = $file->getClientOriginalName();
-               $book->filename = $file->getFilename().'.'.$extension;
+         //Upload a File
 
-               
-            }
+         if(isset($request->upload_book))
+         {
+            $file = $request->file('upload_book');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->put($file->getFilename().'.'.$extension, file_get_contents($file));
+            
+            $book->mime = $file->getClientMimeType();
+            $book->original_filename = $file->getClientOriginalName();
+            $book->filename = $file->getFilename().'.'.$extension;
+             
+         }
            
             /*Save files
                using the local driver which is the default driver and it will save to storage/app directory,to change this goto config/filesystem.php and edit it....
@@ -83,23 +84,7 @@ class BookController extends Controller
                Storage::put($file->getClientOriginalName(),file_get_contents($file));
             */
 
-              /*Get files
-             *********** Method 2 of adding files *************
-              public function add() { 
-               $file = Request::file('filefield');
-               $extension = $file->getClientOriginalExtension();
-               Storage::disk('local')->put($file->getFilename().'.'.$extension,  File::get($file));
-               $entry = new Fileentry();
-               $entry->mime = $file->getClientMimeType();
-               $entry->original_filename = $file->getClientOriginalName();
-               $entry->filename = $file->getFilename().'.'.$extension;
-          
-               $entry->save();
-               }
-              
-              */ 
-
-            
+                       
 
             // to show the image, put this line in the view
             //<img src="{{asset('images/' . $book->image_path)}}"
