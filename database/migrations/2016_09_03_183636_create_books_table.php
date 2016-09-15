@@ -19,7 +19,7 @@ class CreateBooksTable extends Migration
             $table->string('author');
             $table->integer('year')->unsigned();
             $table->string('category');
-            $table->string('image_path')->nullable();
+            $table->string('image_path')->default('defbookcover.jpg');
             $table->timestamps();
         });
     }

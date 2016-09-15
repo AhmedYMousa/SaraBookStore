@@ -1,9 +1,14 @@
 @extends('layouts.app')
 @section('content')
+		@if(Session::has('message'))
+			<div class="alert alert-success">
+		{{Session::get('message')}}
+			</div>
+		@endif
 	<div class="jumbotron">
 		<div class="container">
-		<h1>We have what you look For</h1>
-		<p>Knowledge is power and with power comes great resposibility</p>
+		<h1>Welcome to Sara BookStore</h1>
+		<h3>We hope that you find what you're looking for</h3>
 		<a href="" class="btn btn-success">Learn more</a>
 		</div>
 	</div>	
@@ -27,34 +32,10 @@
 		</div>
 
 	@endforeach	
-		<div class="text-center">
+		
+	</div>
+	<div class="text-center">
 		{{$book->links()}}
 		</div>
-		<!-- <div class="col-md-4">
-			<div class="thumbnail">
-				<img src="images/html.jpg">
-				<div class="caption text-center">
-				<h3>HTML 5</h3>
-				<p>HTML is really easy to learn</p>
-				<p>
-					<a href="" class="btn btn-primary">Click here to Download</a>
-				</p>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-md-4">
-			<div class="thumbnail">
-				<img src="images/javascript.jpg" width="350" height="218">
-				<div class="caption text-center">
-				<h3>JavaScript</h3>
-				<p>JS is like battries to a car</p>
-				<p>
-					<a href="" class="btn btn-primary">Click here to Download</a>
-				</p>
-				</div>
-			</div>
-		</div> -->
-	</div>
 	</div>
 @stop

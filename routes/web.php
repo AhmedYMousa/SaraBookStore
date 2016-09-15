@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::resource('/library','BookController');
-Route::get('/file/{id}','BookController@get');
+Route::get('/file/{id}','BookController@getBook');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');

@@ -9,6 +9,7 @@ use Validator;
 use App\Book;
 use Image;
 use Storage;
+use Response;
 
 class BookController extends Controller
 {
@@ -49,7 +50,7 @@ class BookController extends Controller
    			$book->year=$request->input('year');
 
             //Save image file
-            if($request->hasFile('book_cover'))
+            if($request->book_cover!=null)
             {
                $image=$request->file('book_cover');
                $fileName=time() . '.' .$image->getClientOriginalExtension(); //getClientOriginalExtension(); it include in image intervention library that we pulled through composer
@@ -59,7 +60,7 @@ class BookController extends Controller
 
             }
 
-            if($request->hasFile('upload_book'))
+            if($request->upload_book!=null)
             {
                $file = $request->file('upload_book');
                $extension = $file->getClientOriginalExtension();
@@ -117,13 +118,13 @@ class BookController extends Controller
             return view('library.edit',compact('book'));
          }
 
-         public function get($filename)
+         public function getBook($filename)
          {
    
             $book = Book::where('filename', '=', $filename)->firstOrFail();
             $file = Storage::disk('local')->get($book->filename);
-               return (new Response($file, 200))
-                       ->header('Content-Type', $book->mime);
+           
+               return Response($file, 200)->header('Content-Type', $book->mime);
         }
    }
 

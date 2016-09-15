@@ -27,8 +27,12 @@
 			<div class="col-md-4">
 				<div class="thumbnail">
 					<img src="{{asset('images/'.$book->image_path)}}">
+					@if ($book->filename!=null)
 					<h3 class="caption">Download Book</h3>
 					<a href="{{url('file/'.$book->filename)}}" class="btn btn-success" >Download</a>
+					@else
+					<h3 class="caption">No link for this book</h3>
+					@endif
 				</div>
 
 			</div>

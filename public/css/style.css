@@ -1,0 +1,28 @@
+.jumbotron
+{	
+	background-image: url("../images/abstract-color-waves-abstract.jpg");
+	height:350px;
+    background-size: 1300px 350px;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    position: relative;
+   
+
+
+}
+
+.jumbotron .container
+{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	color: white;
+}
+
+.container  a,a:link,a:hover,a:visited
+{
+	text-decoration: none;
+
+}
+
