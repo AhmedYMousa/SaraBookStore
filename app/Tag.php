@@ -8,6 +8,8 @@ class Tag extends Model
 {
     //
 
+	protected $table="tags";
+	
    public function books()
    {
    	/*Structure of this relation

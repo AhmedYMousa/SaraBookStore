@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('main')
+@section('title','Register')
 
 @section('content')
 <div class="container">
@@ -67,16 +68,34 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class=" col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
                                   <i class="fa fa-btn fa-user"></i>  Register
                                 </button>
+                                 <button onclick="clearBtn()" class="btn btn-danger">
+                                  <i class="fa fa-btn fa-trash"></i>  Clear fields
+                                </button>
                             </div>
                         </div>
+                        
                     </form>
+                    
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+
+<script type="text/javascript">
+    function clearBtn()
+    {
+        $('#name').val("");
+        $('#email').val("");
+        $('#password').val("");
+        $('#password-confirm').val("");     
+    }
+</script>
 @endsection

@@ -17,9 +17,9 @@ class AddFileToBooks extends Migration
         Schema::table('books',function($table)
             {
                
-                $table->string('filename')->nullable()->after('category');
-                $table->string('mime')->nullable();
-                $table->string('original_filename')->nullable();
+                $table->string('filename')->nullable()->after('image_path');
+                $table->string('original_filename')->nullable()->after('filename');
+                $table->string('mime')->nullable()->after('original_filename');
             });
     }
 

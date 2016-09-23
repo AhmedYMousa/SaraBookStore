@@ -7,17 +7,25 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Validator;
 use App\Book;
-use Image;
+use Image,Auth;
 use Storage;
-use Response;
-
+use App\Tag;
+use App\Category,App\User;
+use Response,Session,Gate;
 class BookController extends Controller
 {
     //
+   protected $user;
+   public function __construct(User $user)
+   {
+       $this->user = $user;
+      return $this->middleware('auth');
+   }
 
    public function index()
    {
-      $book=Book::paginate(3);
+      $book=Book::orderBy('year','desc')->paginate(6);
+
    	return view('library.index')->with('book',$book);
    } 
 
@@ -30,11 +38,14 @@ class BookController extends Controller
 
    public function create()
    {
-   	return view('library.create');
+      $tags=Tag::all();
+      $categories=Category::all();
+   	return view('library.create')->with('tags',$tags)->with('categories',$categories);
    }
 
    public function store(Request $request)
    {
+      
    	$rules=array('title'=>'required','author'=>'required','year'=>'required');
    	$validator=Validator::make($request->all(),$rules);
    		if($validator->fails())
@@ -43,11 +54,14 @@ class BookController extends Controller
    		}
    		else
    		{
+            
    			$book=new Book;
    			$book->title=$request->input('title');
    			$book->author=$request->input('author');
-   			$book->category=$request->input('category');
+   			$book->category_id=$request->category;
+            $book->user_id=$request->user()->id;
    			$book->year=$request->input('year');
+            $book->description=$request->description;
 
             //Save image file
          if(isset($request->book_cover))
@@ -55,7 +69,7 @@ class BookController extends Controller
             $image=$request->file('book_cover');
             $fileName=time() . '.' .$image->getClientOriginalExtension(); //getClientOriginalExtension(); is included in image intervention library that we pulled through composer
             $location=public_path('images/' .$fileName);
-            Image::make($image)->resize(350,350)->save($location);
+            Image::make($image)->resize(300,300)->save($location);
             $book->image_path=$fileName;
 
          }
@@ -65,12 +79,12 @@ class BookController extends Controller
          if(isset($request->upload_book))
          {
             $file = $request->file('upload_book');
-            $extension = $file->getClientOriginalExtension();
-            Storage::disk('local')->put($file->getFilename().'.'.$extension, file_get_contents($file));
+           $name=$book->title .'-'.$book->author.'-'.$book->year.'-'.'.'.$file->getClientOriginalExtension();
+            Storage::disk('local')->put($name, file_get_contents($file));
             
             $book->mime = $file->getClientMimeType();
             $book->original_filename = $file->getClientOriginalName();
-            $book->filename = $file->getFilename().'.'.$extension;
+            $book->filename = $name;
              
          }
            
@@ -90,8 +104,9 @@ class BookController extends Controller
             //<img src="{{asset('images/' . $book->image_path)}}"
             // asset method is used to create public url
    			$book->save();
+            $book->tags()->sync($request->tags, false);
             
-   			\Session::flash('message','Book Added Successfully!!');
+   			Session::flash('message','Book Added Successfully!!');
             return redirect('/library');
             }
 
@@ -100,7 +115,56 @@ class BookController extends Controller
    		public function edit($id)
          {
             $book=Book::findOrFail($id);
-            return view('library.edit',compact('book'));
+            $tags=Tag::all();
+            $categories=Category::all();
+            $this->authorize('update',$book);
+            return view('library.edit',compact('book','tags','categories'));
+            //route example   
+            //<a href="{{ route('contacts.edit', [$contact->id]) }}">Edit This Contact</a>
+         }
+
+         public function update(Request $request,$id)
+         {
+            $rules=['title'=>'required','author'=>'required','year'=>'required','category'=>'required'];
+            $book=Book::findOrFail($id);
+            $book->tags()->detach();
+            $validator=Validator::make($request->all(),$rules);
+
+            if($validator->fails())
+            {
+               return redirect()->route('library.edit',$book->id)->withErrors($validator);
+            }
+            else
+            {
+                
+                $book->title=$request->title;
+                $book->author=$request->author;
+                $book->year=$request->year;
+                $book->category_id=$request->category;
+                $book->description=$request->description;
+                if(isset($request->book_cover))
+                {
+                     $image=$request->file('book_cover');
+                     $name=time(). '.' .$image->getClientOriginalExtension();
+                     $location=public_path('images/'.$name);
+                     Image::make($image)->resize(300,300)->save($location);
+                     $book->image_path=$name;
+                }
+                if(isset($request->upload_book))
+                {
+                     $file=$request->file('upload_book');
+                     $name=$book->title .'-'.$book->author.'-'.$book->year.'-'.'.'.$file->getClientOriginalExtension();
+                     Storage::disk('local')->put($name,file_get_contents($file));
+                     $book->mime=$file->getClientMimeType();
+                     $book->original_filename=$file->getClientOriginalName();
+                     $book->filename=$name;
+
+                }
+                $book->save();
+                $book->tags()->sync($request->tags,false);
+                Session::flash('message','Updated Seccessfully!!');
+                return redirect('/library');
+            }
          }
 
          public function getBook($filename)
@@ -110,6 +174,30 @@ class BookController extends Controller
             $file = Storage::disk('local')->get($book->filename);
            
                return Response($file, 200)->header('Content-Type', $book->mime);
+        }
+
+
+        public function destroy($id)
+        {
+               /* Checking Policies use Gate
+                 
+               if (Gate::denies('destroy', $book)) {
+                   abort(403);
+               } 
+               */
+
+               $book=Book::findOrFail($id);
+               $this->authorize('delete',$book);
+               $book->tags()->detach();
+               $book->delete();
+
+              Session::flash('message', 'The book was successfully deleted.');
+              return redirect()->route('library.index');
+            
+              
+            
+
+            
         }
    }
 

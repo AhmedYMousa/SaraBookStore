@@ -22,9 +22,18 @@ class Book extends Model
 		return $this->belongsToMany(Tag::class);
 	}
 
+	public function category()
+	{
+		return $this->belongsTo(Category::class);
+	}
 
 	public function scopePublished($query)
 	{
 		return $query->where('year','<=',Carbon::now());
+	}
+
+	public function user()
+	{
+		return $this->belongsTo(User::class);
 	}		
 }

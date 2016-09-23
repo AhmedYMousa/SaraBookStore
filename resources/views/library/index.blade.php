@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('main')
+@section('title','Homepage')
 @section('content')
 		@if(Session::has('message'))
 			<div class="alert alert-success">
@@ -13,29 +14,34 @@
 		</div>
 	</div>	
 	
-	<div class="container">
-	<div class="row">
-	@foreach($book as $post)	
+<div class="container">
+	@foreach($book->chunk(3) as $chunk)
+	<div class="row">	
+			@foreach($chunk as $product)
 		<div class="col-md-4">
 			<div class="thumbnail">
-				<img  class="img-rounded" src="{{'images/'.$post->image_path}}">
+				<img  class="img-rounded " src="{{'images/'.$product->image_path}}">
 				<div class="caption text-center">
-				<h3>{{$post->title}}</h3>
-				<p>Category: {{$post->category}}</p>
-				<p>Year: {{$post->year}}</p>
+				<h3>{{$product->title}}</h3>
+				<p>Category: {{$product->category->name}}</p>
+				<p>Year: {{$product->year}}</p>
 				<p>
-					<a href="{{url('/library/'.$post->id)}}" class="btn btn-primary">Book details</a>
+					<a href="{{url('/library/'.$product->id)}}" class="btn btn-primary">Book details</a>
 				</p>
 				</div>
 				
 			</div>
+			</div>
+			@endforeach
 		</div>
-
 	@endforeach	
-		
-	</div>
-	<div class="text-center">
-		{{$book->links()}}
+	
+	<div class="row">
+		<div class="col-md-12">
+			<div class="text-center">
+				{!!$book->links()!!}
+			</div>
 		</div>
 	</div>
+</div>
 @stop

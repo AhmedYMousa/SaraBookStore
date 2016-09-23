@@ -17,10 +17,12 @@ class CreateBooksTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('author');
+            $table->integer('user_id')->unsigned();
+            $table->integer('category_id')->unsigned();
             $table->integer('year')->unsigned();
-            $table->string('category');
+            $table->text('description');
             $table->string('image_path')->default('defbookcover.jpg');
-            $table->timestamps();
+            $table->timestamps();        
         });
     }
 
