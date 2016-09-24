@@ -14,14 +14,8 @@ use App\Category,App\User;
 use Response,Session,Gate;
 class BookController extends Controller
 {
-    //
-   protected $user;
-   public function __construct(User $user)
-   {
-       $this->user = $user;
-      return $this->middleware('auth');
-   }
-
+    
+   
    public function index()
    {
       $book=Book::orderBy('year','desc')->paginate(6);
@@ -55,19 +49,19 @@ class BookController extends Controller
    		else
    		{
             
-   			$book=new Book;
-   			$book->title=$request->input('title');
-   			$book->author=$request->input('author');
-   			$book->category_id=$request->category;
-            $book->user_id=$request->user()->id;
-   			$book->year=$request->input('year');
-            $book->description=$request->description;
+     			$book=new Book;
+     			$book->title=$request->input('title');
+     			$book->author=$request->input('author');
+     			$book->category_id=$request->category;
+          $book->user_id=$request->user()->id;
+     			$book->year=$request->input('year');
+          $book->description=$request->description;
 
             //Save image file
          if(isset($request->book_cover))
          {
             $image=$request->file('book_cover');
-            $fileName=time() . '.' .$image->getClientOriginalExtension(); //getClientOriginalExtension(); is included in image intervention library that we pulled through composer
+            $fileName=time() . '.' .$image->getClientOriginalExtension(); 
             $location=public_path('images/' .$fileName);
             Image::make($image)->resize(300,300)->save($location);
             $book->image_path=$fileName;
@@ -81,25 +75,22 @@ class BookController extends Controller
             $file = $request->file('upload_book');
            $name=$book->title .'-'.$book->author.'-'.$book->year.'-'.'.'.$file->getClientOriginalExtension();
             Storage::disk('local')->put($name, file_get_contents($file));
-            
             $book->mime = $file->getClientMimeType();
             $book->original_filename = $file->getClientOriginalName();
             $book->filename = $name;
              
          }
            
-            /*Save files
-               using the local driver which is the default driver and it will save to storage/app directory,to change this goto config/filesystem.php and edit it....
-               Don't forget to import Storage facade
+            /**
+              *Save files
+              * using the local driver which is the default driver and it will save to storage/app *directory,to change this goto config/filesystem.php and edit it....
+              *Don't forget to import Storage facade
             */
 
              /*
                $file=request->file('input tag name');
                Storage::put($file->getClientOriginalName(),file_get_contents($file));
             */
-
-                       
-
             // to show the image, put this line in the view
             //<img src="{{asset('images/' . $book->image_path)}}"
             // asset method is used to create public url

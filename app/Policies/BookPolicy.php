@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\User,App\Book;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Session;
 
 class BookPolicy
 {
@@ -31,7 +32,7 @@ class BookPolicy
     {
         //
         if (Auth::guest()){
-            \Session::flash('message','Failed action,unauthorized user');
+            Session::flash('message','Failed action,unauthorized user');
             return redirect('/library');
         }
 
@@ -50,8 +51,8 @@ class BookPolicy
      */
     public function update(User $user,Book $book)
     {
-        //
-        return $user->id===$book->user_id;
+        
+        return $user->id === $book->user_id || $user->isAdmin;
 
     }
 
@@ -65,6 +66,6 @@ class BookPolicy
     public function delete(User $user,Book $book)
     {
         //
-        return $user->id === intval($book->user_id);
+        return $user->id === $book->user_id ||$user->isAdmin;
     }
 }

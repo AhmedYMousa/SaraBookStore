@@ -27,8 +27,12 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $casts=['isAdmin'=>'boolean'];
+
     public function Books()
     {
         return $this->hasMany(Book::class);
     }
+
+    
 }

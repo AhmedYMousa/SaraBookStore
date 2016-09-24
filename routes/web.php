@@ -15,10 +15,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::group(['middleware'=>['auth','web']],function()
+	{
 Route::resource('/library','BookController');
 Route::resource('/category','CategoryController',['except'=>['create']]);
 Route::resource('/tag','TagController', ['except' => ['create']]);
-Route::get('/file/{id}','BookController@getBook');
+Route::get('/file/{id}','BookController@getBook');	
+Route::get('/dashboard',function()
+	{
+		echo 'You have Access!!!';
+	})->middleware('isAdmin');	
+	});
+
 Route::get('/unauthorized',function()
 	{
 	return view('unauthorized');

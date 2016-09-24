@@ -3,7 +3,11 @@
 @section('content')
 		@if(Session::has('message'))
 			<div class="alert alert-success">
-		{{Session::get('message')}}
+			{{Session::get('message')}}
+			</div>
+		@elseif (Session::has('danger'))
+			<div class="alert alert-danger">
+			{{Session::get('danger')}}
 			</div>
 		@endif
 	<div class="jumbotron">
