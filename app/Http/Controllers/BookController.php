@@ -57,7 +57,7 @@ class BookController extends Controller
      			$book->year=$request->input('year');
           $book->description=$request->description;
 
-          dd($request);
+          
 
             //Save image file
          if($request->hasFile('book_cover'))
