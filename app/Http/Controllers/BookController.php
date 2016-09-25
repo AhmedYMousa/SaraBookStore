@@ -58,7 +58,7 @@ class BookController extends Controller
           $book->description=$request->description;
 
             //Save image file
-         if(isset($request->book_cover))
+         if($request->hasFile('book_cover'))
          {
             $image=$request->file('book_cover');
             $fileName=time() . '.' .$image->getClientOriginalExtension(); 
@@ -70,7 +70,7 @@ class BookController extends Controller
 
          //Upload a File
 
-         if(isset($request->upload_book))
+         if($request->hasFile('upload_book'))
          {
             $file = $request->file('upload_book');
            $name=$book->title .'-'.$book->author.'-'.$book->year.'-'.'.'.$file->getClientOriginalExtension();
