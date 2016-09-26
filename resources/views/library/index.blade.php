@@ -15,6 +15,7 @@
 		<h1>Welcome to Sara BookStore</h1>
 		<h3>We hope that you find what you're looking for</h3>
 		<a href="" class="btn btn-success">Learn more</a>
+		
 		</div>
 	</div>	
 	

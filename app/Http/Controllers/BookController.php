@@ -19,8 +19,9 @@ class BookController extends Controller
    public function index()
    {
       $book=Book::orderBy('year','desc')->paginate(6);
+      $user="<i>Ahmed</i>";
 
-   	return view('library.index')->with('book',$book);
+   	return view('library.index')->with('book',$book)->with('user',$user);
    } 
 
 
