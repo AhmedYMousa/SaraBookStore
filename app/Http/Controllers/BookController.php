@@ -66,6 +66,7 @@ class BookController extends Controller
             $image=$request->file('book_cover');
             $fileName=time() . '.' .$image->getClientOriginalExtension(); 
             $location=public_path('images/' .$fileName);
+            //resize(width,height)
             Image::make($image)->resize(300,300)->save($location);
             $book->image_path=$fileName;
 
