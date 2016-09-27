@@ -29,10 +29,13 @@ class User extends Authenticatable
 
     protected $casts=['isAdmin'=>'boolean'];
 
-    public function Books()
+    public function books()
     {
         return $this->hasMany(Book::class);
     }
 
-    
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role');
+    }
 }
