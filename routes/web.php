@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 
-Route::group(['middleware'=>['auth','web']],function()
+Route::group(['middleware'=>['auth']],function()
 	{
 Route::resource('/library','BookController');
 Route::resource('/category','CategoryController',['except'=>['create']]);

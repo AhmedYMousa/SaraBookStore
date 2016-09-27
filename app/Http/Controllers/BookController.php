@@ -10,7 +10,7 @@ use App\Book;
 use Image,Auth;
 use Storage;
 use App\Tag;
-use App\Category,App\User;
+use App\Category,App\User,File;
 use Response,Session,Gate;
 class BookController extends Controller
 {
@@ -184,6 +184,10 @@ class BookController extends Controller
                $book=Book::findOrFail($id);
                $this->authorize('delete',$book);
                $book->tags()->detach();
+               //Delete image
+               File::delete('images/'.$book->image_path);
+               //Delete file
+               Storage::delete($book->filename);
                $book->delete();
 
               Session::flash('message', 'The book was successfully deleted.');
