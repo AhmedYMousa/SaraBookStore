@@ -186,7 +186,7 @@ class BookController extends Controller
                $book->tags()->detach();
                //Delete image
                File::delete('images/'.$book->image_path);
-               //Delete file
+               //Delete fil
                Storage::delete($book->filename);
                $book->delete();
 
