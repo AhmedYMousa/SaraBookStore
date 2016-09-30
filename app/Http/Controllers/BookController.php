@@ -140,7 +140,7 @@ class BookController extends Controller
                 $book->year=$request->year;
                 $book->category_id=$request->category;
                 $book->description=$request->description;
-                if$request->hasFile('book_cover'))
+                if($request->hasFile('book_cover'))
                 {
                      $image=$request->file('book_cover');
                      $name=time(). '.' .$image->getClientOriginalExtension();
