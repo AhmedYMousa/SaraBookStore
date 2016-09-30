@@ -5,13 +5,13 @@
 		<div class="form-group">
 				<label for="title" class="col-md-2 control-label">Title:</label>
 			<div class="col-md-9">	
-				<input type="text" placeholder="Title" name="title" class="form-control">
+				<input type="text" value="{{old('title')}}" placeholder="Title" name="title" class="form-control">
 			</div>
 		</div>
 		<div class="form-group">
 				<label for="author" class="col-md-2 control-label">Author:</label>
 			<div class="col-md-9">
-				<input type="text" name="author" class="form-control" placeholder="Author">
+				<input type="text" value="{{old('author')}}" name="author" class="form-control" placeholder="Author">
 			</div>
 		</div>
 

@@ -127,7 +127,10 @@ class BookController extends Controller
 
             if($validator->fails())
             {
-               return redirect()->route('library.edit',$book->id)->withErrors($validator);
+               return redirect()
+                      ->route('library.edit',$book->id)
+                      ->withErrors($validator)
+                      ->withInput();
             }
             else
             {
@@ -137,7 +140,7 @@ class BookController extends Controller
                 $book->year=$request->year;
                 $book->category_id=$request->category;
                 $book->description=$request->description;
-                if(isset($request->book_cover))
+                if$request->hasFile('book_cover'))
                 {
                      $image=$request->file('book_cover');
                      $name=time(). '.' .$image->getClientOriginalExtension();
@@ -145,7 +148,7 @@ class BookController extends Controller
                      Image::make($image)->resize(300,300)->save($location);
                      $book->image_path=$name;
                 }
-                if(isset($request->upload_book))
+                if($request->hasFile('upload_book'))
                 {
                      $file=$request->file('upload_book');
                      $name=$book->title .'-'.$book->author.'-'.$book->year.'-'.'.'.$file->getClientOriginalExtension();
