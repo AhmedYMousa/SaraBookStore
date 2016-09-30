@@ -185,7 +185,11 @@ class BookController extends Controller
                $this->authorize('delete',$book);
                $book->tags()->detach();
                //Delete image
-               File::delete('images/'.$book->image_path);
+               if($book->image_path != 'defbookcover.jpg')
+               {
+                  File::delete('images/'.$book->image_path);
+               }
+               
                //Delete fil
                Storage::delete($book->filename);
                $book->delete();
