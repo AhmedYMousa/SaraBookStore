@@ -18,6 +18,11 @@
 		position: relative;
 		display: inline;
 	}
+	th,td
+	{
+		text-align: center;
+	}
+
 	
 
 </style>
@@ -35,6 +40,7 @@
 						<th>Author</th>
 						<th>Category</th>
 						<th>Published Year</th>
+						<th>Created at</th>
 					</thead>
 					<tbody>
 						<tr>
@@ -42,6 +48,7 @@
 						<td>{{$book->author}}</td>
 						<td>{{$book->category->name}}</td>
 						<td>{{$book->year}}</td>
+						<td>{{date('M-jS-Y, h:iA',strtotime($book->created_at))}}</td>
 						</tr>
 					</tbody>
 				</table>
