@@ -12,16 +12,16 @@ class BooksTableSeeder extends Seeder
     public function run()
     {
         //
-        
+        $faker=Faker\Factory::create();
 
        	factory('App\Book',10)->create([
-        		 'title'	=>	'Laravel',
-        		 'author'	=>	'Taylor Otwell',
-        		 'user_id'	=>	rand(0,20),
-        		 'category_id'	=>	rand(0,20),
-        		 'image_path'	=>	'defualt',
-        		 'year'		=>	2010,
-        		 'description'	=>	'Body',]);
+        		 'title'	=>	$faker->sentence,
+        		 'author'	=>	$faker->name,
+        		 'user_id'	=>	$faker->randomDigitNotNull,
+        		 'category_id'	=>	$faker->randomDigitNotNull,
+        		 'image_path'	=>	$faker->text(50),
+        		 'year'		=>	$faker->year,
+        		 'description'	=>	$faker->paragraph,]);
         
     }
 }

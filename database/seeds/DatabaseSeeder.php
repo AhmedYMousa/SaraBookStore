@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
     	Model::unguard();  
+    	//To bypass foreign key constraints to be able to truncate tables with foreign keys
     	DB::statement('	SET FOREIGN_KEY_CHECKS=0;');
     	foreach ($this->tables as $table) {
     		
